@@ -8,7 +8,6 @@ greeter = (###* @type {string} ### person) ->
 
 # Note that in constructors, param type intellisense is messed up. Maybe fixable
 class Student
-  #
   ###*
   # @param firstName {string}
   # @param middleInitial {string}
@@ -128,13 +127,11 @@ buildName = (first, last) ->
 
 class Donut
   constructor: (###* @type {string} ### name) ->
-    #
     ###*
     # @private
     # @type {string}
     ###
     @id
-    #
     ###* @protected ###
     @name = name
   #
@@ -148,10 +145,8 @@ class Donut
 
 class Octopus
   constructor: (###* @type {string} ### name) ->
-    #
     ###* @readonly ###
     @name = name
-    #
     ###* @readonly ###
     @numberOfLegs = 8
 
@@ -159,7 +154,6 @@ class Octopus
 
 class Employee
   constructor: ->
-    #
     ###*
     # @private
     # @type {string}
