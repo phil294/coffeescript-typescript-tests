@@ -183,6 +183,9 @@ Object.defineProperty Employee, 'fullName',
 
 # All blocks below should contain an error
 
+numbr = 1
+numbr = '1'
+
 greeter 123
 
 new Student('a', 'b', 123)
