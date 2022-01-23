@@ -4,21 +4,14 @@
 
 # Type Annotations
 
-greeter = (###* @type {string} ### person) ->
+greeter = (person ~ string) ->
 
 # Note that in constructors, param type intellisense is messed up. Maybe fixable
 class Student
-  ###*
-  # @param firstName {string}
-  # @param middleInitial {string}
-  # @param lastName {string}
-  ###
-  constructor: (@firstName, @middleInitial, @lastName) ->
+  constructor: (@firstName ~ string, @middleInitial ~ string, @lastName ~ string) ->
 
 
-#
-###* @type {Array<number>} ###
-list = [1, 2, 3]
+list ~ number[] = [1, 2, 3]
 
 # Type Assertions
 
@@ -30,7 +23,7 @@ someCanvas = ###* @type {HTMLCanvasElement} ### (document.getElementById "main_c
 
 # Nonnull assertion
 
-liveDangerously = (###* @type {number=}) ### x) ->
+liveDangerously = (x? ~ number) ->
   # No error
   # There is no JSDoc non-null assertion, so we need to
   # fall back to type casts, but they don't work (same as above)
@@ -39,24 +32,16 @@ liveDangerously = (###* @type {number=}) ### x) ->
 
 # Type Predicates
 
-#
 ###*
-# @param pet {Student | HTMLCanvasElement}}
 # @return {pet is Student}
 ###
-isFish = (pet) ->
+isFish = (pet ~ typeof Student | HTMLCanvasElement) ->
   pet.firstName != undefined
 
 
 # Generic Functions
 
-#
-###*
-# @template Type
-# @param arr {Type[]}
-# @return {Type}
-###
-firstElement = (arr) -> 
+firstElement = <Type>(arr ~ Type[]) ~ Type -> 
   arr[0]
 
 # Function Overloads
@@ -88,45 +73,33 @@ d2 = makeDate 5, 5, 5
 
 # Interfaces
 
-#
-###*
-# @typedef {{
-#   firstName: string
-#   lastName: string
-# }} Person
-###
+`interface Person {
+  firstName: string
+  lastName: string
+}`
 
 # Composing Types
 
-#
-###*
-# @typedef { "open" | "closed" | "minimized" } WindowStates
-# @typedef { string | number } BotId
-###
+`type WindowStates = "open" | "closed" | "minimized"`
+`type BotId = string | number`
 
 # Enum
 
-#
-###* @enum {number | string} ### 
-BooleanLikeHeterogeneousEnum =
-  No: 0
+`enum BooleanLikeHeterogeneousEnum {
+  No: 0,
   Yes: "YES"
-
+}`
 
 # Optional Parameters
 
-###*
-# @param first {string}
-# @param last {string=}
-###
-buildName = (first, last) ->
+buildName = (first ~ string, last? ~ string) ->
   if last then return first + " " + last
   return first
 
 # Public, private, and protected modifiers
 
 class Donut
-  constructor: (###* @type {string} ### name) ->
+  constructor: (name ~ string) ->
     ###*
     # @private
     # @type {string}
@@ -136,7 +109,7 @@ class Donut
     @name = name
   #
   ###* @public ###
-  move: (###* @type {number} ### distanceInMeters) ->
+  move: (distanceInMeters ~ number) ->
     console.log "#{@name} moved #{distanceInMeters}m."
 
 
@@ -144,7 +117,7 @@ class Donut
 # Readonly modifier
 
 class Octopus
-  constructor: (###* @type {string} ### name) ->
+  constructor: (name ~ string) ->
     ###* @readonly ###
     @name = name
     ###* @readonly ###
@@ -163,7 +136,7 @@ class Employee
 Object.defineProperty Employee, 'fullName',
   get: ->
     @_fullName
-  set: (###* @type {string} ### newName) ->
+  set: (newName ~ string) ->
     if newName.length > 10
       throw new Error "fullName has a max length of 10"
     @_fullName = newName
@@ -175,7 +148,14 @@ Object.defineProperty Employee, 'fullName',
 
 # Declaration
 
-# Impossible I think, but in these rare cases you can just put them in a separate file
+`declare global {
+  interface Array<T> {
+    toObservable(): Promise<T>;
+  }
+}`
+export default {}
+
+Array::toObservable = -> Promise.resolve @
 
 #############################
 
@@ -204,17 +184,11 @@ if isFish pet
 
 firstElement(["1", "2"]).toFixed()
 
+person ~ Person = firstName: '123'
 #
-###* @type {Person} ###
-person = firstName: '123'
+windowState ~ WindowStates = 'exploded'
 
-#
-###* @type {WindowStates} ###
-windowState = 'exploded'
-
-#
-##* @type {BooleanLikeHeterogeneousEnum} ##
-maybe = 'maybe' # TODO: why no error?
+maybe ~ BooleanLikeHeterogeneousEnum = 'maybe'
 
 new Donut('donut').id
 
